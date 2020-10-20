@@ -77,7 +77,7 @@ public final class Scanner {
       }
       break;
 
-    case ' ': case '\n': case '\r': case '\t':
+    case ' ': case '\n': case '\r': case '\t': 
       takeIt();
       break;
     }
@@ -151,6 +151,14 @@ public final class Scanner {
     case '~':
       takeIt();
       return Token.IS;
+
+    case '|':
+      takeit();
+      return Token.PIPE;
+
+    case "..":
+       takeit();
+       return Token.DDOTS; 
 
     case '(':
       takeIt();

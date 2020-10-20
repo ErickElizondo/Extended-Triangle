@@ -104,19 +104,20 @@ final class Token extends Object {
     COMMA		= 36,
     BECOMES		= 37,
     IS			= 38,
-    PIPE    = 39,
+    PIPE        = 39,
+    DDOTS       = 40,
 
     // brackets...
-    LPAREN		= 40,
-    RPAREN		= 41,
-    LBRACKET	= 42,
-    RBRACKET	= 43,
-    LCURLY		= 44,
-    RCURLY		= 45,
+    LPAREN		= 41,
+    RPAREN		= 42,
+    LBRACKET	= 43,
+    RBRACKET	= 44,
+    LCURLY		= 45,
+    RCURLY		= 46,
 
     // special tokens...
-    EOT			= 46,
-    ERROR		= 47;
+    EOT			= 47,
+    ERROR		= 48;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -159,6 +160,7 @@ final class Token extends Object {
     ":=",
     "~",
     "|",
+    "..",
     "(",
     ")",
     "[",

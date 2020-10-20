@@ -323,7 +323,7 @@ public class Parser {
 
     Comand cAST = parseCaseLiteral();
     Command cAST2;
-    if(currentToken.kind == DOT){
+    if(currentToken.kind == Token.DDOTS){
       acceptIt();
       cAST2 = parseCaseLiteral();
       //AST (cAST,cAST2)
@@ -489,14 +489,14 @@ public class Parser {
         break;
     }
 
-
-    case Token.SEMICOLON:
     case Token.SKIP:
       {
         acceptIt();
+        finish(commandPos);
         cAST = new EmptyCommand(commandPos);
       }
       break;
+    case Token.SEMICOLON:
     case Token.END:
     case Token.ELSE:
     case Token.IN:
@@ -782,35 +782,7 @@ public class Parser {
     SourcePosition declarationPos = new SourcePosition();
     start(declarationPos);
     switch(currentToken.kind){//falta single-declaration
-      case Token.CONST:
-      {
-        declarationAST = parseSingleDeclaration();
-        finish(declarationPos);
-        //AST
-      }
-      break;
-      case Token.VAR:
-      {
-        declarationAST = parseSingleDeclaration();
-        finish(declarationPos);
-        //AST
-      }
-      break;
-      case Token.PROC:
-      {
-        declarationAST = parseSingleDeclaration();
-        finish(declarationPos);
-        //AST
-      }
-      break;
-      case Token.FUNC:
-      {
-        declarationAST = parseSingleDeclaration();
-        finish(declarationPos);
-        //AST
-      }
-      break;
-      case Token.TYPE:
+      case Token.CONST: case Token.VAR: case Token.PROC: case Token.FUNC: case Token.TYPE:
       {
         declarationAST = parseSingleDeclaration();
         finish(declarationPos);
