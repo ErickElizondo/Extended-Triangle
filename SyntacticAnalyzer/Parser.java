@@ -792,7 +792,7 @@ public class Parser {
       case Token.RECURSIVE:
       {
         acceptIt();
-        Declaration declProc = parseProcFunc();
+        Declaration declProc = parseProcFuncs();
         accept(Token.END);
         finish(declarationPos);
         //AST
