@@ -1,2 +1,2 @@
-# Proyecto-1-Compiladores
+# Extended-Triangle
 TriangleJava
