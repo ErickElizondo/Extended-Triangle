@@ -267,6 +267,7 @@ public class Parser {
     return commandAST;
   }
 
+  //Mamando desde aquí
   Command parseCases() throws SyntaxError { //está cabrón
     Command commandAST = null; // in case there's a syntactic error
 
@@ -360,7 +361,7 @@ public class Parser {
 
     }
   }
-
+  //Estos de arriba no son commands.
 
 
   Command parseSingleCommand() throws SyntaxError {
@@ -746,36 +747,6 @@ public class Parser {
 // DECLARATIONS
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-  Declaration parseDeclaration() throws SyntaxError {
-    Declaration declarationAST = null; // in case there's a syntactic error
-
-    SourcePosition declarationPos = new SourcePosition();
-    start(declarationPos);
-    declarationAST = parseCompoundDeclaration();
-    while (currentToken.kind == Token.SEMICOLON) {
-      acceptIt();
-      Declaration d2AST = parseCompoundDeclaration();
-      finish(declarationPos);
-      declarationAST = new SequentialDeclaration(declarationAST, d2AST,
-        declarationPos);
-    }
-    return declarationAST;
-  }
-
-  Declaration parseForDeclaration() throws SyntaxError{
-      Declaration declarationAST = null; // in case there's a syntactic error
-      SourcePosition declarationPos = new SourcePosition();
-      start(declarationPos);
-
-      Identifier iAST= parseIdentifier();
-      accept(Token.BECOMES);
-      Expression eAST1 = parseExpression();
-      finish(declarationPos);
-      //AST
-      return declarationAST;
-  }
-
   Declaration parseCompoundDeclaration() throws SyntaxError{
     Declaration declarationAST = null; // in case there's a syntactic error
 
@@ -816,6 +787,35 @@ public class Parser {
     }
 
     return declarationAST;
+  }
+
+  Declaration parseDeclaration() throws SyntaxError {
+    Declaration declarationAST = null; // in case there's a syntactic error
+
+    SourcePosition declarationPos = new SourcePosition();
+    start(declarationPos);
+    declarationAST = parseCompoundDeclaration();
+    while (currentToken.kind == Token.SEMICOLON) {
+      acceptIt();
+      Declaration d2AST = parseCompoundDeclaration();
+      finish(declarationPos);
+      declarationAST = new SequentialDeclaration(declarationAST, d2AST,
+        declarationPos);
+    }
+    return declarationAST;
+  }
+
+  Declaration parseForDeclaration() throws SyntaxError{
+      Declaration declarationAST = null; // in case there's a syntactic error
+      SourcePosition declarationPos = new SourcePosition();
+      start(declarationPos);
+
+      Identifier iAST= parseIdentifier();
+      accept(Token.BECOMES);
+      Expression eAST1 = parseExpression();
+      finish(declarationPos);
+      //AST
+      return declarationAST;
   }
 
   Declaration parseProcFunc() throws SyntaxError{
