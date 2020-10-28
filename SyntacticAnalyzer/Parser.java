@@ -14,76 +14,8 @@
 
 package Triangle.SyntacticAnalyzer;
 
+import Triangle.AbstractSyntaxTrees.*;
 import Triangle.ErrorReporter;
-import Triangle.AbstractSyntaxTrees.ActualParameter;
-import Triangle.AbstractSyntaxTrees.ActualParameterSequence;
-import Triangle.AbstractSyntaxTrees.ArrayAggregate;
-import Triangle.AbstractSyntaxTrees.ArrayExpression;
-import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
-import Triangle.AbstractSyntaxTrees.AssignCommand;
-import Triangle.AbstractSyntaxTrees.BinaryExpression;
-import Triangle.AbstractSyntaxTrees.CallCommand;
-import Triangle.AbstractSyntaxTrees.CallExpression;
-import Triangle.AbstractSyntaxTrees.CharacterExpression;
-import Triangle.AbstractSyntaxTrees.CharacterLiteral;
-import Triangle.AbstractSyntaxTrees.Command;
-import Triangle.AbstractSyntaxTrees.ConstActualParameter;
-import Triangle.AbstractSyntaxTrees.ConstDeclaration;
-import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
-import Triangle.AbstractSyntaxTrees.Declaration;
-import Triangle.AbstractSyntaxTrees.DotVname;
-import Triangle.AbstractSyntaxTrees.DoUntilCommand;
-import Triangle.AbstractSyntaxTrees.DoWhileCommand;
-import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
-import Triangle.AbstractSyntaxTrees.EmptyCommand;
-import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
-import Triangle.AbstractSyntaxTrees.Expression;
-import Triangle.AbstractSyntaxTrees.FieldTypeDenoter;
-import Triangle.AbstractSyntaxTrees.FormalParameter;
-import Triangle.AbstractSyntaxTrees.FormalParameterSequence;
-import Triangle.AbstractSyntaxTrees.FuncActualParameter;
-import Triangle.AbstractSyntaxTrees.FuncDeclaration;
-import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
-import Triangle.AbstractSyntaxTrees.Identifier;
-import Triangle.AbstractSyntaxTrees.IfCommand;
-import Triangle.AbstractSyntaxTrees.IfExpression;
-import Triangle.AbstractSyntaxTrees.IntegerExpression;
-import Triangle.AbstractSyntaxTrees.IntegerLiteral;
-import Triangle.AbstractSyntaxTrees.LetCommand;
-import Triangle.AbstractSyntaxTrees.LetExpression;
-import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
-import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
-import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
-import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
-import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
-import Triangle.AbstractSyntaxTrees.Operator;
-import Triangle.AbstractSyntaxTrees.ProcActualParameter;
-import Triangle.AbstractSyntaxTrees.ProcDeclaration;
-import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
-import Triangle.AbstractSyntaxTrees.Program;
-import Triangle.AbstractSyntaxTrees.RecordAggregate;
-import Triangle.AbstractSyntaxTrees.RecordExpression;
-import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
-import Triangle.AbstractSyntaxTrees.SequentialCommand;
-import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
-import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
-import Triangle.AbstractSyntaxTrees.SimpleVname;
-import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
-import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
-import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
-import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
-import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
-import Triangle.AbstractSyntaxTrees.SubscriptVname;
-import Triangle.AbstractSyntaxTrees.TypeDeclaration;
-import Triangle.AbstractSyntaxTrees.TypeDenoter;
-import Triangle.AbstractSyntaxTrees.UnaryExpression;
-import Triangle.AbstractSyntaxTrees.UntilCommand;
-import Triangle.AbstractSyntaxTrees.VarActualParameter;
-import Triangle.AbstractSyntaxTrees.VarDeclaration;
-import Triangle.AbstractSyntaxTrees.VarFormalParameter;
-import Triangle.AbstractSyntaxTrees.Vname;
-import Triangle.AbstractSyntaxTrees.VnameExpression;
-import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 public class Parser {
 
@@ -267,103 +199,6 @@ public class Parser {
     return commandAST;
   }
 
-  //Mamando desde aquí
-  Command parseCases() throws SyntaxError { //está cabrón
-    Command commandAST = null; // in case there's a syntactic error
-
-    SourcePosition commandPos = new SourcePosition();
-    start(commandPos);
-    Command cAST = parseCase();
-    while(currentToken.kind == Token.CASE){ //almacenar todos los parseCase de algún modo
-      parseCase();
-    }
-    if (currentToken.kind == Token.ELSE){
-      Command cAST2 = parseElse();
-    }
-    finish(commandPos);
-    //AST
-
-  }
-
-  Command parseCase() throws SyntaxError {
-    Command commandAST = null; // in case there's a syntactic error
-
-    SourcePosition commandPos = new SourcePosition();
-    start(commandPos);
-    accept(Token.CASE);
-    Command cAST = parseCaseLiterals();
-    accept(Token.THEN);
-    Command cAST2 = parseCommand();
-    finish(commandPos);
-    //AST
-
-  }
-  Command parseElse() throws SyntaxError {
-    Command commandAST = null; // in case there's a syntactic error
-
-    SourcePosition commandPos = new SourcePosition();
-    start(commandPos);
-    accept(Token.ELSE);
-    Command cAST = parseCommand();
-    finish(commandPos);
-    //AST
-  }
-
-  Command parseCaseLiterals() throws SyntaxError{
-    Command commandAST = null; // in case there's a syntactic error
-
-    SourcePosition commandPos = new SourcePosition();
-    start(commandPos);
-  }
-
-  Command parseCaseRange() throws SyntaxError{
-    Command commandAST = null; // in case there's a syntactic error
-
-    SourcePosition commandPos = new SourcePosition();
-    start(commandPos);
-
-    Comand cAST = parseCaseLiteral();
-    Command cAST2;
-    if(currentToken.kind == Token.DDOTS){
-      acceptIt();
-      cAST2 = parseCaseLiteral();
-      //AST (cAST,cAST2)
-    }else{
-      //AST cAST
-    }
-    finish(commandPos);
-  }
-
-  Command parseCaseLiteral() throws SyntaxError{
-    Command commandAST = null; // in case there's a syntactic error
-
-    SourcePosition commandPos = new SourcePosition();
-    start(commandPos);
-    switch(currentToken.kind){
-      case Token.INTLITERAL:
-      {
-        IntegerLiteral ilAST = parseIntegerLiteral();
-        finish(commandPos);
-        //AST
-      }
-      break;
-      case Token.CHARLITERAL:
-      {
-        CharacterLiteral clAST= parseCharacterLiteral();
-        finish(commandPos);
-        //AST
-      }
-      break;
-      default:
-        syntacticError("\"%\" cannot start a command",
-        currentToken.spelling);
-        break;
-
-    }
-  }
-  //Estos de arriba no son commands.
-
-
   Command parseSingleCommand() throws SyntaxError {
     Command commandAST = null; // in case there's a syntactic error
 
@@ -417,61 +252,55 @@ public class Parser {
   case Token.LOOP:
     {
       acceptIt();
-      switch(currentToken.kind){
-        case Token.WHILE:
-        {
-            acceptIt();
-            Expression eAST = parseExpression();
-            accept(Token.DO);
-            Command commandAST = parseCommand();
-            accept(Token.END);
-            finish(commandPos);
-            commandAST = new WhileCommand(eAST, cAST, commandPos);             
+      switch(currentToken.kind) {
+        case Token.WHILE: {
+          acceptIt();
+          Expression eAST = parseExpression();
+          accept(Token.DO);
+          Command commandAST = parseCommand();
+          accept(Token.END);
+          finish(commandPos);
+          commandAST = new WhileCommand(eAST, cAST, commandPos);
         }
         break;
-        case Token.UNTIL:
-        {
-            acceptIt();
-            Expression eAST = parseExpression();
-            accept(Token.DO);
-            Command commandAST = parseCommand();
-            accept(Token.END);
-            finish(commandPos);
-            commandAST = new UntilCommand(eAST, cAST, commandPos);            
+        case Token.UNTIL: {
+          acceptIt();
+          Expression eAST = parseExpression();
+          accept(Token.DO);
+          Command commandAST = parseCommand();
+          accept(Token.END);
+          finish(commandPos);
+          commandAST = new UntilCommand(eAST, cAST, commandPos);
         }
         break;
-        case Token.DO:
-        {
+        case Token.DO: {
           acceptIt();
           Command cAST = parseCommand();
-          switch(currentToken.kind){
-            case Token.WHILE:
-            {
+          switch (currentToken.kind) {
+            case Token.WHILE: {
               acceptIt();
               Expression eAST = parseExpression();
               accept(Token.END);
               finish(commandPos);
-              commandAST = new DoWhileCommand(eAST, cAST, commandPos);        
+              commandAST = new DoWhileCommand(eAST, cAST, commandPos);
             }
             break;
-            case Token.UNTIL:
-            {
+            case Token.UNTIL: {
               acceptIt();
               Expression eAST = parseExpression();
               accept(Token.END);
               finish(commandPos);
-              commandAST = new DoUntilCommand(eAST, cAST, commandPos);             
+              commandAST = new DoUntilCommand(eAST, cAST, commandPos);
             }
             break;
             default:
               syntacticError("\"%\" cannot start a command",
-              currentToken.spelling);
+                      currentToken.spelling);
               break;
           }
         }
         break;
-      case Token.FOR:
-        {
+        case Token.FOR: {
           acceptIt();
           Declaration dAST = parseForDeclaration();
           accept(Token.TO);
@@ -483,18 +312,18 @@ public class Parser {
           //AST         
         }
         break;
+        default:
+          syntacticError("\"%\" cannot start a command",
+                  currentToken.spelling);
+          break;
       }
-      default:
-        syntacticError("\"%\" cannot start a command",
-        currentToken.spelling);
-        break;
     }
 
     case Token.SKIP:
       {
         acceptIt();
         finish(commandPos);
-        cAST = new EmptyCommand(commandPos);
+        Command cAST = new EmptyCommand(commandPos);
       }
       break;
     case Token.SEMICOLON:
@@ -1258,5 +1087,127 @@ public class Parser {
       fieldAST = new SingleFieldTypeDenoter(iAST, tAST, fieldPos);
     }
     return fieldAST;
+  }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// CASES
+//
+///////////////////////////////////////////////////////////////////////////////
+
+  CaseRule parseCases() throws SyntaxError {
+    CaseRule caseAST = null; // in case there's a syntactic error
+
+    SourcePosition casePos = new SourcePosition();
+    start(casePos);
+    caseAST = parseCase();
+    while(currentToken.kind == Token.CASE){
+      CaseRule caAST2 = parseCase();
+      finish(casePos);
+      caseAST = new SequentialCase
+    }
+    if (currentToken.kind == Token.ELSE){
+      CaseRule caAST2 = parseElseCase();
+      finish(casePos);
+    }
+    return caseAST;
+  }
+
+  CaseRule parseCase() throws SyntaxError {
+    CaseRule caseAST = null; // in case there's a syntactic error
+
+    SourcePosition casePos = new SourcePosition();
+    start(casePos);
+    accept(Token.CASE);
+    CaseRule caAST = parseCaseLiterals();
+    accept(Token.THEN);
+    Command cAST = parseCommand();
+    finish(casePos);
+    //AST
+    caseAST = new Case(caAST, cAST, casePos);
+    return caseAST;
+  }
+
+  CaseRule parseElseCase() throws SyntaxError {
+    CaseRule caseAST = null; // in case there's a syntactic error
+
+    SourcePosition casePos = new SourcePosition();
+    start(casePos);
+    accept(Token.ELSE);
+    Command cAST = parseCommand();
+    finish(casePos);
+    caseAST = new ElseCase(cAST, casePos);
+    return caseAST;
+  }
+
+  CaseRule parseCaseLiterals() throws SyntaxError{
+    CaseRule caseAST = null; // in case there's a syntactic error
+
+    SourcePosition casePos = new SourcePosition();
+
+    start(casePos);
+    CaseRule caRAST1 = parseCaseRange();
+
+    if (currentToken.kind == Token.PIPE){
+      while (currentToken.kind == Token.PIPE) {
+        acceptIt();
+        CaseRule caRAST2 = parseCaseRange();
+        finish(casePos);
+        caRAST1 = new SequentialCaseLiterals(caRAST1, caRAST2, casePos);
+      }
+    }else{
+      caseAST = new SingleCaseLiterals(caRAST1, casePos);
+      finish(casePos);
+    }
+
+    return caseAST;
+  }
+
+  CaseRule parseCaseRange() throws SyntaxError{
+    CaseRule caseAST = null; // in case there's a syntactic error
+
+    SourcePosition casePos = new SourcePosition();
+    start(casePos);
+
+    CaseRule caAST1 = parseCaseLiteral();
+    CaseRule caAST2 = null;
+    if(currentToken.kind == Token.DDOTS){
+      acceptIt();
+      caAST2 = parseCaseLiteral();
+      finish(casePos);
+      caseAST = new DDotsCaseRange(caAST1, caAST2, casePos);
+    }else{
+      finish(casePos);
+      caseAST = new SingleCaseRange(caAST1, casePos);
+    }
+    return caseAST;
+  }
+
+  CaseRule parseCaseLiteral() throws SyntaxError{
+    CaseRule caseAST = null; // in case there's a syntactic error
+
+    SourcePosition casePos = new SourcePosition();
+    start(casePos);
+    switch(currentToken.kind){
+      case Token.INTLITERAL:
+      {
+        Terminal ilAST = parseIntegerLiteral();
+        finish(casePos);
+        caseAST = new CaseLiteral(ilAST, casePos);
+      }
+      break;
+      case Token.CHARLITERAL:
+      {
+        Terminal clAST= parseCharacterLiteral();
+        finish(casePos);
+        caseAST = new CaseLiteral(clAST, casePos);
+      }
+      break;
+      default:
+        syntacticError("\"%\" cannot start a case",
+                currentToken.spelling);
+        break;
+    }
+    return caseAST;
   }
 }
