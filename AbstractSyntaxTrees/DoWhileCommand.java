@@ -3,6 +3,8 @@ package Triangle.AbstractSyntaxTrees;
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class DoWhileCommand extends Command {
+  public Expression E;
+  public Command C;
 
   public DoWhileCommand (Expression eAST, Command cAST, SourcePosition thePosition) {
     super (thePosition);
@@ -11,9 +13,6 @@ public class DoWhileCommand extends Command {
   }
 
   public Object visit(Visitor v, Object o) {
-    return v.visitDoWhileCommand(this, o);
+    return null;//v.visitDoWhileCommand(this, o);
   }
-
-  public Expression E;
-  public Command C;
 }
